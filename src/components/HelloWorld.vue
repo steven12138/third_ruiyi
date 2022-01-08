@@ -1,130 +1,83 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa"
-          target="_blank"
-          rel="noopener"
-          >pwa</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
-  </div>
+  <v-container class="fill-height" fluid>
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="10" md="2">
+        <v-card class="elevation-12">
+          <v-toolbar color="primary" dark flat>
+            <v-toolbar-title>登录</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                label="Username"
+                name="uid"
+                prepend-icon="mdi-account"
+                type="text"
+                v-model="uid"
+              ></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="login">确认</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import axios from "axios";
+import qs from "qs";
+
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
-  },
+
+  data: () => ({
+    uid: ""
+  }),
+  methods: {
+    login: function() {
+      let self = this;
+      console.log(this.uid);
+      var data = qs.stringify({
+        userName: this.uid.toString(),
+        password:
+          "MBH5uB8g9LXq+AVdru085UU1HPDgmZpvsPFhZrhKfLq5wSkyfL3xpg5bgrS/AsVoNMYlch/vfOzl bsZ0dRbWf2fU34vWD2g0KHb7zodzATkMugT0+3LUyri/dr3hZgC+km0ANWSakKpPYtiE+Ywra+W1 z4PaOTFVZhqMdu2G4po=",
+        passwordType: "0"
+      });
+      var config = {
+        method: "post",
+        url: "/api/Login/StudentLogin",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJHdWlkIjoiYjg5MThhZTcyNGE3NDIwN2EzZDYzN2Q2MmZjZTA2NDciLCJOYW1lIjoi5L2V5aSp6ZizIiwibmJmIjoxNjI4NzMxNDIwLCJleHAiOjE2Mjg4MTc4MjAsImlzcyI6IlJ1aVlpWXVuIiwiYXVkIjoiU3R1ZGVudHMifQ.uAKgpmdsBzZ3A-X2c31W1cUYBrM18gNcwneOhfzBpJ8",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: data
+      };
+
+      axios(config)
+        .then(function(response) {
+          if (response.data.statusCode != 200) {
+            console.error("unknown error");
+            self.$message.error("未知的用户");
+          }
+          window.localStorage.setItem("token", response.data.data.tokenString);
+          window.localStorage.setItem("guid", response.data.data.guid);
+          window.localStorage.setItem("name", response.data.data.name);
+          window.localStorage.setItem(
+            "gradeGuid",
+            response.data.data.gradeGuid
+          );
+          self.$message.success("你好，" + response.data.data.name);
+          self.$router.push("/lunch");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
