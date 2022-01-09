@@ -15,6 +15,7 @@
                 type="text"
                 v-model="uid"
               ></v-text-field>
+              <input style="display: none" />
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -48,7 +49,7 @@ export default {
       });
       var config = {
         method: "post",
-        url: "/api/Login/StudentLogin",
+        url: "https://bdfzres.lexuewang.cn:5002/Login/StudentLogin",
         headers: {
           Authorization:
             "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJHdWlkIjoiYjg5MThhZTcyNGE3NDIwN2EzZDYzN2Q2MmZjZTA2NDciLCJOYW1lIjoi5L2V5aSp6ZizIiwibmJmIjoxNjI4NzMxNDIwLCJleHAiOjE2Mjg4MTc4MjAsImlzcyI6IlJ1aVlpWXVuIiwiYXVkIjoiU3R1ZGVudHMifQ.uAKgpmdsBzZ3A-X2c31W1cUYBrM18gNcwneOhfzBpJ8",

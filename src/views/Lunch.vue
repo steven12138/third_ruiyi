@@ -44,13 +44,14 @@
         </v-navigation-drawer>
         <v-col>
           <v-row
+            v-show="clips"
             align="center"
             style="padding-top: 10px; padding-left: 30px; margin-bottom: -8px"
           >
             <v-switch v-model="show_test" @click="switch_test"></v-switch>
             <span>查看考试</span>
           </v-row>
-          <v-divider></v-divider>
+          <v-divider v-show="clips"></v-divider>
           <v-list
             v-show="clips"
             @scroll="handle_scroll($event)"
@@ -165,7 +166,7 @@ export default {
       let config = {
         method: "get",
         url:
-          "/api/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
+          "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
           id +
           "&PageIndex=" +
           self.max_id +
@@ -195,7 +196,7 @@ export default {
       let config = {
         method: "get",
         url:
-          "/api/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
+          "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
           id +
           "&PageIndex=" +
           self.max_id +

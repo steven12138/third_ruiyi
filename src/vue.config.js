@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: "./",
   devServer: {
     open: true,
     host: "localhost",
@@ -12,9 +13,9 @@ module.exports = {
         ws: true,
         changOrigin: true, //允许跨域
         pathRewrite: {
-          "^/api": "", //请求的时候使用这个api就可以
-        },
-      },
-    },
-  },
+          "^/api": "" //请求的时候使用这个api就可以
+        }
+      }
+    }
+  }
 };

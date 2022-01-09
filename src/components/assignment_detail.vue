@@ -48,7 +48,7 @@
                     {{ detail.contentIndex }}.
                     {{ detail.question.questionType }}
                   </v-card-subtitle>
-                  <div class="card-body" style="padding-bottom: 10px">
+                  <div class="card-body" style="padding:20px;">
                     <div
                       v-html="detail.question.content"
                       style="margin: 10px 0"
@@ -126,7 +126,7 @@
                           v-for="file in detail.attachmentResources"
                           :key="file.guid"
                           @click="
-                            download_file(file.extension, file.title, file.guid)
+                            open_file(file.extension, file.title, file.guid)
                           "
                         >
                           <v-list-item-avatar>
@@ -209,7 +209,7 @@ export default {
     let config = {
       method: "get",
       url:
-        "/api/SeniorThreeExercise/StudentSystem/TeacherAssignmentStep/" +
+        "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/TeacherAssignmentStep/" +
         this.item_info.guid +
         "?teacherAssignmentType=1",
       headers: {
@@ -235,7 +235,7 @@ export default {
 
           let config1 = {
             method: "post",
-            url: "/api/SeniorThreeExercise/StudentSystem/GetGetLessonContent",
+            url: "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/GetGetLessonContent",
             headers: {
               Authorization: "Bearer " + self.token,
               "Content-Type": "application/json;charset=utf-8"

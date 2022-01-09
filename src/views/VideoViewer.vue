@@ -56,7 +56,7 @@ export default {
     handle_download: function() {
       let url = this.play_options.sources[0].src.replace(
         "https://bdfzres.lexuewang.cn:5002",
-        "/api"
+        "https://bdfzres.lexuewang.cn:5002"
       );
       let title = this.name;
       fetch(url)
