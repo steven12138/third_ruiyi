@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Lunch from "../views/Lunch.vue";
+import VideoViewer from "../views/VideoViewer.vue";
 
 Vue.use(VueRouter);
 
@@ -12,9 +13,14 @@ const routes = [
     component: Home,
   },
   {
-    path: '/lunch',
+    path: "/lunch",
     name: "Lunch",
     component: Lunch,
+  },
+  {
+    path: "/video_viewer",
+    name: "VideoViewer",
+    component: VideoViewer,
   },
   {
     path: "/about",

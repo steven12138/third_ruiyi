@@ -12,7 +12,7 @@
           <v-expansion-panel-content style="padding-top: 10px">
             <!--            依次循环渲染每一步骤中的每一项-->
             <div
-              v-for="detail in step.step_detail"
+              v-for="(detail, j) in step.step_detail"
               v-bind:key="detail.contentIndex"
             >
               <!--              非试题类内容-->
@@ -23,7 +23,7 @@
                 <v-list-item
                   v-for="file in detail.attachmentResources"
                   :key="file.guid"
-                  @click="d"
+                  @click="open_file(file.extension, file.title, file.guid)"
                 >
                   <v-list-item-avatar>
                     <v-icon
@@ -43,25 +43,116 @@
               </div>
               <!--              试题类内容-->
               <div v-if="detail.type === 1">
-                <div
-                  v-html="detail.question.content"
-                  style="margin: 10px 0"
-                ></div>
-                <v-row>
-                  <v-btn
-                    style="
-                      transition: all 0.25s;
-                      margin-top: -10px;
-                      margin-bottom: 10px;
-                      margin-left: 5%;
-                    "
-                    :small="clip"
-                    :x-small="!clip"
-                    color="warning"
-                  >查看答案
-                  </v-btn>
-                </v-row>
-                <v-divider style="margin:20px 0;"></v-divider>
+                <v-card style="margin: 30px 0; transition: all 0.25s">
+                  <v-card-subtitle>
+                    {{ detail.contentIndex }}.
+                    {{ detail.question.questionType }}
+                  </v-card-subtitle>
+                  <div class="card-body" style="padding-bottom: 10px">
+                    <div
+                      v-html="detail.question.content"
+                      style="margin: 10px 0"
+                    ></div>
+                    <v-row>
+                      <v-btn
+                        style="
+                          transition: all 0.25s;
+                          margin-top: -10px;
+                          margin-bottom: 10px;
+                          margin-left: 5%;
+                        "
+                        :small="clip && !is_small"
+                        :x-small="!clip || is_small"
+                        color="warning"
+                        @click="show_ans(i, j)"
+                      >查看答案
+                      </v-btn>
+                    </v-row>
+                    <v-expand-transition>
+                      <v-card
+                        style="
+                          margin-top: 10px;
+                          margin-left: 10px;
+                          margin-right: 10px;
+                        "
+                        v-show="detail.show_ans"
+                      >
+                        <v-card-subtitle
+                          v-if="detail.question.analysis !== '<p><br></p>'"
+                          style="padding-top: 8px; padding-bottom: 8px"
+                        >解析
+                        </v-card-subtitle>
+                        <v-divider
+                          v-if="detail.question.analysis !== '<p><br></p>'"
+                        ></v-divider>
+                        <div
+                          style="padding: 8px 8px 8px 15px"
+                          v-if="detail.question.analysis !== '<p><br></p>'"
+                          v-html="detail.question.analysis"
+                        ></div>
+                        <v-divider
+                          v-if="
+                            detail.question.answer[0] !== '' &&
+                            detail.question.analysis !== '<p><br></p>'
+                          "
+                        ></v-divider>
+                        <v-card-subtitle
+                          v-if="detail.question.answer[0] !== ''"
+                          style="padding-top: 8px; padding-bottom: 8px"
+                        >答案
+                        </v-card-subtitle>
+                        <v-divider
+                          v-if="detail.question.answer[0] !== ''"
+                        ></v-divider>
+                        <div
+                          style="padding: 8px 8px 8px 15px"
+                          v-for="(ans, k) in detail.question.answer"
+                          :key="k"
+                          v-html="ans"
+                        ></div>
+                        <!--                        渲染文件-->
+                        <v-divider
+                          v-if="detail.attachmentResources.length"
+                        ></v-divider>
+                        <v-card-subtitle
+                          v-if="detail.attachmentResources.length"
+                          style="padding-top: 8px; padding-bottom: 8px"
+                        >附件
+                        </v-card-subtitle>
+                        <v-divider
+                          v-if="detail.attachmentResources.length"
+                        ></v-divider>
+                        <v-list-item
+                          v-for="file in detail.attachmentResources"
+                          :key="file.guid"
+                          @click="
+                            download_file(file.extension, file.title, file.guid)
+                          "
+                        >
+                          <v-list-item-avatar>
+                            <v-icon
+                              class="amber white--text"
+                              v-if="file.extension === '.mp4'"
+                            >mdi-video
+                            </v-icon>
+                            <v-icon class="blue white--text" v-else
+                            >mdi-file
+                            </v-icon
+                            >
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title
+                              v-html="file.title"
+                            ></v-list-item-title>
+                            <v-list-item-subtitle
+                              v-html="file.extension"
+                            ></v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-card>
+                    </v-expand-transition>
+                  </div>
+                </v-card>
               </div>
             </div>
           </v-expansion-panel-content>
@@ -73,6 +164,7 @@
 
 <script>
 import axios from "axios";
+import Vue from "vue";
 
 export default {
   name: "assignment_detail",
@@ -83,10 +175,33 @@ export default {
     };
   },
   methods: {
-    d: function() {
+    open_file: function(ext, title, guid) {
+      if (ext === "") return;
+      if (ext != ".mp4") {
+        window.open(
+          "https://bdfzres.lexuewang.cn:5002/ResourceCenter/Resource/ResourcContent/" +
+          guid +
+          "." +
+          ext
+        );
+      } else {
+        let url = this.$router.resolve({
+          path: "/video_viewer",
+          query: {
+            guid: guid,
+            name: title
+          }
+        });
+        window.open(url.href, "_blank");
+      }
+    },
+    show_ans: function(i, j) {
+      let newitem = this.steps[i];
+      newitem.step_detail[j].show_ans = !newitem.step_detail[j].show_ans;
+      Vue.set(this.steps, i, newitem);
     }
   },
-  props: ["item_info", "clip"],
+  props: ["item_info", "clip", "is_small"],
   mounted: async function() {
     let self = this;
     this.info = this.item_info;
@@ -108,7 +223,6 @@ export default {
       for (let i = 0; i < self.steps.length; i++) {
         let step_i = self.steps[i];
         self.steps[i]["step_detail"] = [];
-        console.log(step_i);
         let max_page = 1;
         let qst_length = 10;
         while (qst_length >= 10) {
@@ -133,9 +247,10 @@ export default {
           let step_i_detail = await axios(config1);
           step_i_detail = step_i_detail.data.data;
           for (let j = 0; j < step_i_detail.length; j++) {
+            step_i_detail[j]["show_ans"] = false;
             if (step_i_detail[j].content) {
               step_i_detail[j].content = step_i_detail[j].content.replaceAll(
-                "src=\\\"",
+                "src=\"",
                 "src=\"https://bdfzres.lexuewang.cn:5002"
               );
             }
@@ -152,6 +267,8 @@ export default {
                 "src=\"",
                 "src=\"https://bdfzres.lexuewang.cn:5002"
               );
+
+              //替换答案
               for (
                 let k = 0;
                 k < step_i_detail[j]["question"].answer.length;
@@ -172,7 +289,7 @@ export default {
           qst_length = step_i_detail.length;
         }
       }
-      console.warn(self.steps);
+      this.$forceUpdate();
     } catch (error) {
       console.error(error);
     }

@@ -40,7 +40,6 @@ export default {
   methods: {
     login: function() {
       let self = this;
-      console.log(this.uid);
       var data = qs.stringify({
         userName: this.uid.toString(),
         password:
