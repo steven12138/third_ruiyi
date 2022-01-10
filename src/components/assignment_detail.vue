@@ -48,7 +48,7 @@
                     {{ detail.contentIndex }}.
                     {{ detail.question.questionType }}
                   </v-card-subtitle>
-                  <div class="card-body" style="padding:20px;">
+                  <div class="card-body" style="padding: 20px">
                     <div
                       v-html="detail.question.content"
                       style="margin: 10px 0"
@@ -57,7 +57,6 @@
                       <v-btn
                         style="
                           transition: all 0.25s;
-                          margin-top: -10px;
                           margin-bottom: 10px;
                           margin-left: 5%;
                         "
@@ -77,6 +76,30 @@
                         "
                         v-show="detail.show_ans"
                       >
+                        <!--                        渲染答案-->
+                        <v-card-subtitle
+                          style="padding-top: 8px; padding-bottom: 8px"
+                        >答案
+                        </v-card-subtitle>
+                        <v-divider
+                        ></v-divider>
+                        <div
+                          style="padding: 8px 8px 8px 15px"
+                          v-for="(ans, k) in detail.question.answer"
+                          :key="k"
+                          v-html="ans"
+                        ></div>
+                        <div v-if="detail.question.answer[0] === ''"
+                          style="padding: 0 8px 8px 15px; margin-top: -10px"
+                        >
+                          这里空空如也!
+                        </div>
+                        <!--                        渲染解析-->
+                        <v-divider
+                          v-if="
+                            detail.question.analysis !== '<p><br></p>'
+                          "
+                        ></v-divider>
                         <v-card-subtitle
                           v-if="detail.question.analysis !== '<p><br></p>'"
                           style="padding-top: 8px; padding-bottom: 8px"
@@ -89,26 +112,6 @@
                           style="padding: 8px 8px 8px 15px"
                           v-if="detail.question.analysis !== '<p><br></p>'"
                           v-html="detail.question.analysis"
-                        ></div>
-                        <v-divider
-                          v-if="
-                            detail.question.answer[0] !== '' &&
-                            detail.question.analysis !== '<p><br></p>'
-                          "
-                        ></v-divider>
-                        <v-card-subtitle
-                          v-if="detail.question.answer[0] !== ''"
-                          style="padding-top: 8px; padding-bottom: 8px"
-                        >答案
-                        </v-card-subtitle>
-                        <v-divider
-                          v-if="detail.question.answer[0] !== ''"
-                        ></v-divider>
-                        <div
-                          style="padding: 8px 8px 8px 15px"
-                          v-for="(ans, k) in detail.question.answer"
-                          :key="k"
-                          v-html="ans"
                         ></div>
                         <!--                        渲染文件-->
                         <v-divider
@@ -137,8 +140,7 @@
                             </v-icon>
                             <v-icon class="blue white--text" v-else
                             >mdi-file
-                            </v-icon
-                            >
+                            </v-icon>
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title
