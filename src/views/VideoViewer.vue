@@ -26,7 +26,7 @@ export default {
       name: "",
       guid: "",
       play_options: {
-        playbackRates: [0.5, 1.0, 1.5, 2.0], //可选择的播放速度
+        playbackRates: [0.5, 0.75, 1.0, 1.25, 1.5, 2.0], //可选择的播放速度
         autoplay: false, //如果true,浏览器准备好时开始回放。
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 视频一结束就重新开始。

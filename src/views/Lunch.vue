@@ -95,6 +95,7 @@
       ></v-slider>
       <v-divider></v-divider>
       <v-main
+        ref="main_view"
         :style="
           'margin: 0; padding: 10px; max-width: calc(100vw - ' +
           (clips ? '280px' : '73px') +

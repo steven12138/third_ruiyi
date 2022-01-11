@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.23fb891eb8a3f87f391df99baca27fe5.js"
+  "precache-manifest.b80ffcd8811b148c2ab59ed1c67b9fb0.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "third_ruiyi"});

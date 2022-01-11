@@ -63,6 +63,7 @@ export default {
           if (response.data.statusCode != 200) {
             console.error("unknown error");
             self.$message.error("未知的用户");
+            return;
           }
           window.localStorage.setItem("token", response.data.data.tokenString);
           window.localStorage.setItem("guid", response.data.data.guid);
@@ -75,7 +76,7 @@ export default {
           self.$router.push("/lunch");
         })
         .catch(function(error) {
-          console.log(error);
+          self.$message.warning("跨源异常 "+error);
         });
     }
   }

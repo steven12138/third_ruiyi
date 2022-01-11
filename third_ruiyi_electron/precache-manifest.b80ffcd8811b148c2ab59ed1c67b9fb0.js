@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "img/GLaDOShd_Portal_2.368f03f7.webp"
   },
   {
-    "revision": "253662a8c60e5739528d8136899de122",
+    "revision": "a739281c9edfa83df4a4a69dcfd5119a",
     "url": "index.html"
   },
   {
@@ -24,8 +24,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "js/about.d6845756.js"
   },
   {
-    "revision": "0a66b3e35e95a40ad49c",
-    "url": "js/app.3fd6ee45.js"
+    "revision": "85ded6bfb2b2dab9cacf",
+    "url": "js/app.801785d6.js"
   },
   {
     "revision": "10a6eeb730670ccef809",
