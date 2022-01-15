@@ -167,7 +167,8 @@ export default {
       let config = {
         method: "get",
         url:
-          "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
+          this.$api_base +
+          "/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
           id +
           "&PageIndex=" +
           self.max_id +
@@ -197,7 +198,8 @@ export default {
       let config = {
         method: "get",
         url:
-          "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
+          this.$api_base +
+          "/SeniorThreeExercise/StudentSystem/GetAssignmentBySubject?subjectId=" +
           id +
           "&PageIndex=" +
           self.max_id +

@@ -1,10 +1,12 @@
 <template>
   <v-container fluid style="flex-direction: column">
-    <v-card style="width: 60%; padding: 10px">
+    <v-card style="width: 60%; min-width: 400px; padding: 10px">
       <v-card-title>
         <span>视频预览</span>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="handle_download">下载视频</v-btn>
+        <v-btn small fab color="primary" @click="handle_download">
+          <v-icon>mdi-download</v-icon>
+        </v-btn>
       </v-card-title>
       <v-card-subtitle>{{ name }}</v-card-subtitle>
       <video-player
@@ -37,8 +39,8 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: "http://www.html5videoplayer.net/videos/madagascar3.mp4" //url地址
-          }
+            src: "https://www.html5videoplayer.net/videos/madagascar3.mp4", //url地址
+          },
         ],
         poster: "", //你的封面地址
         // width: document.documentElement.clientWidth,
@@ -47,18 +49,18 @@ export default {
           timeDivider: true, //当前时间和持续时间的分隔符
           durationDisplay: true, //显示持续时间
           remainingTimeDisplay: true, //是否显示剩余时间功能
-          fullscreenToggle: true //全屏按钮
-        }
-      }
+          fullscreenToggle: true, //全屏按钮
+        },
+      },
     };
   },
   methods: {
-    handle_download: function() {
+    handle_download: function () {
       let url = this.play_options.sources[0].src.replace(
         "https://bdfzres.lexuewang.cn:5002",
-        "https://bdfzres.lexuewang.cn:5002"
+        this.$api_base
       );
-      let title = this.name;
+      let title = this.name.replaceAll(" ", "");
       fetch(url)
         .then((res) => res.blob())
         .then((blob) => {
@@ -69,16 +71,19 @@ export default {
           a.click();
           window.revokeObjectURL(objectUrl);
         });
-    }
+    },
   },
   mounted() {
     this.name = this.$route.query.name;
     this.guid = this.$route.query.guid;
+    this.ext = this.$route.query.ext;
     this.play_options.sources[0].src =
       "https://bdfzres.lexuewang.cn:5002/ResourceCenter/Resource/ResourcContent/" +
       this.guid +
-      ".mp4";
+      "." +
+      this.ext;
+    console.log(this.play_options);
     this.$forceUpdate();
-  }
+  },
 };
 </script>

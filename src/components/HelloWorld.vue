@@ -36,30 +36,28 @@ export default {
   name: "HelloWorld",
 
   data: () => ({
-    uid: ""
+    uid: "",
   }),
   methods: {
-    login: function() {
+    login: function () {
       let self = this;
-      var data = qs.stringify({
+      let data = qs.stringify({
         userName: this.uid.toString(),
         password:
-          "MBH5uB8g9LXq+AVdru085UU1HPDgmZpvsPFhZrhKfLq5wSkyfL3xpg5bgrS/AsVoNMYlch/vfOzl bsZ0dRbWf2fU34vWD2g0KHb7zodzATkMugT0+3LUyri/dr3hZgC+km0ANWSakKpPYtiE+Ywra+W1 z4PaOTFVZhqMdu2G4po=",
-        passwordType: "0"
+          "m9rPL8ZJAVjI1hmN7ueCHF3pyNONTNIK2OudSsKZDYDoV+/PeTyl5IuJscjXgDzTbqmff3pgC5nc\nkqim8mZHoMM9JOcC3Ih4u49ew8IXSX1vSfEuFPyFOZT64YwkcEZGpErWXTeq5IAwK+tsQfyfEO8o\nt3UFT866TYxUOobJAEk=\n",
+        passwordType: "1",
       });
-      var config = {
+      let config = {
         method: "post",
-        url: "https://bdfzres.lexuewang.cn:5002/Login/StudentLogin",
+        url: self.$api_base + "/Login/StudentLogin",
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJHdWlkIjoiYjg5MThhZTcyNGE3NDIwN2EzZDYzN2Q2MmZjZTA2NDciLCJOYW1lIjoi5L2V5aSp6ZizIiwibmJmIjoxNjI4NzMxNDIwLCJleHAiOjE2Mjg4MTc4MjAsImlzcyI6IlJ1aVlpWXVuIiwiYXVkIjoiU3R1ZGVudHMifQ.uAKgpmdsBzZ3A-X2c31W1cUYBrM18gNcwneOhfzBpJ8",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": " application/x-www-form-urlencoded",
         },
-        data: data
+        data: data,
       };
 
       axios(config)
-        .then(function(response) {
+        .then(function (response) {
           if (response.data.statusCode != 200) {
             console.error("unknown error");
             self.$message.error("未知的用户");
@@ -75,10 +73,10 @@ export default {
           self.$message.success("你好，" + response.data.data.name);
           self.$router.push("/lunch");
         })
-        .catch(function(error) {
-          self.$message.warning("跨源异常 "+error);
+        .catch(function (error) {
+          self.$message.warning("跨源异常 " + error);
         });
-    }
-  }
+    },
+  },
 };
 </script>

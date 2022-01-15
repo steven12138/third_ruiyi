@@ -30,28 +30,60 @@
               <!--              非试题类内容-->
               <div v-if="detail.type === 0">
                 <!--              渲染内容-->
-                <div v-if="detail.content" v-html="detail.content"></div>
+                <div
+                  v-if="detail.content"
+                  class="limit"
+                  v-html="detail.content"
+                ></div>
                 <!--              渲染文件-->
-                <v-list-item
+                <div
                   v-for="file in detail.attachmentResources"
                   :key="file.guid"
-                  @click="open_file(file.extension, file.title, file.guid)"
                 >
-                  <v-list-item-avatar>
-                    <v-icon
-                      class="amber white--text"
-                      v-if="file.extension === '.mp4'"
-                      >mdi-video
-                    </v-icon>
-                    <v-icon class="blue white--text" v-else>mdi-file</v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title v-html="file.title"></v-list-item-title>
-                    <v-list-item-subtitle
-                      v-html="file.extension"
-                    ></v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
+                  <v-list-item
+                    v-if="file.resourceType !== 0"
+                    @click="open_file(file.extension, file.title, file.guid)"
+                  >
+                    <v-list-item-avatar>
+                      <v-icon
+                        class="amber white--text"
+                        v-if="
+                          file.extension === '.mp4' ||
+                          file.extension === '.mov' ||
+                          file.extension === '.avi' ||
+                          file.extension === '.ts' ||
+                          file.extension === '.m4v' ||
+                          file.extension === '.flv' ||
+                          file.extension === '.mkv'
+                        "
+                      >
+                        mdi-video
+                      </v-icon>
+                      <v-icon
+                        v-else-if="
+                          file.extension === '.mp3' ||
+                          file.extension === '.wma' ||
+                          file.extension === '.wav' ||
+                          file.extension === '.ogg' ||
+                          file.extension === '.aac'
+                        "
+                        class="light-green white--text"
+                      >
+                        mdi-music-box
+                      </v-icon>
+                      <v-icon class="blue white--text" v-else>mdi-file</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-html="file.title"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle
+                        v-html="file.extension"
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <span v-else v-html="file.title" class="limit"></span>
+                </div>
               </div>
               <!--              试题类内容-->
               <div v-if="detail.type === 1">
@@ -62,6 +94,7 @@
                   </v-card-subtitle>
                   <div class="card-body" style="padding: 20px">
                     <div
+                      class="limit"
                       v-html="detail.question.content"
                       style="margin: 10px 0"
                     ></div>
@@ -99,6 +132,7 @@
                           style="padding: 8px 8px 8px 15px"
                           v-for="(ans, k) in detail.question.answer"
                           :key="k"
+                          class="limit"
                           v-html="ans"
                         ></div>
                         <div
@@ -122,6 +156,7 @@
                         <div
                           style="padding: 8px 8px 8px 15px"
                           v-if="detail.question.analysis !== '<p><br></p>'"
+                          class="limit"
                           v-html="detail.question.analysis"
                         ></div>
                         <!--                        渲染文件-->
@@ -192,15 +227,57 @@ export default {
   methods: {
     open_file: function (ext, title, guid) {
       if (ext === "") return;
-      if (ext != ".mp4") {
-        window.open(
-          "https://bdfzres.lexuewang.cn:5002/ResourceCenter/Resource/ResourcContent/" + guid + "." + ext
-        );
-      } else {
+      if (
+        ext === ".mp4" ||
+        ext === ".mov" ||
+        ext === ".avi" ||
+        ext === ".ts" ||
+        ext === ".m4v" ||
+        ext === ".flv" ||
+        ext === ".mkv"
+      ) {
         let url = this.$router.resolve({
           path: "/video_viewer",
           query: {
             guid: guid,
+            name: title,
+            ext: ext,
+          },
+        });
+        window.open(url.href, "_blank");
+      } else if (
+        ext === ".mp3" ||
+        ext === ".wma" ||
+        ext === ".wav" ||
+        ext === ".ogg" ||
+        ext === ".aac"
+      ) {
+        let src =
+          this.$api_base +
+          "/ResourceCenter/Resource/ResourcContent/" +
+          guid +
+          "." +
+          ext;
+        let url = this.$router.resolve({
+          path: "/audio_viewer",
+          query: {
+            src: src,
+            name: title,
+            artist: this.item_info.teacherName,
+          },
+        });
+        window.open(url.href, "_blank");
+      } else {
+        let src =
+          this.$api_base +
+          "/ResourceCenter/Resource/ResourcContent/" +
+          guid +
+          "." +
+          ext;
+        let url = this.$router.resolve({
+          path: "/pdf_viewer",
+          query: {
+            src: src,
             name: title,
           },
         });
@@ -221,7 +298,8 @@ export default {
     let config = {
       method: "get",
       url:
-        "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/TeacherAssignmentStep/" +
+        this.$api_base +
+        "/SeniorThreeExercise/StudentSystem/TeacherAssignmentStep/" +
         this.item_info.guid +
         "?teacherAssignmentType=1",
       headers: {
@@ -247,7 +325,9 @@ export default {
 
           let config1 = {
             method: "post",
-            url: "https://bdfzres.lexuewang.cn:5002/SeniorThreeExercise/StudentSystem/GetGetLessonContent",
+            url:
+              this.$api_base +
+              "/SeniorThreeExercise/StudentSystem/GetGetLessonContent",
             headers: {
               Authorization: "Bearer " + self.token,
               "Content-Type": "application/json;charset=utf-8",
@@ -262,6 +342,20 @@ export default {
             step_i_detail[j]["show_ans"] = false;
             if (step_i_detail[j].content) {
               step_i_detail[j].content = step_i_detail[j].content.replaceAll(
+                'src="',
+                'src="https://bdfzres.lexuewang.cn:5002'
+              );
+            }
+            for (
+              let k = 0;
+              k < step_i_detail[j].attachmentResources.length;
+              k++
+            ) {
+              if (step_i_detail[j].attachmentResources[k].resourceType !== 0)
+                continue;
+              step_i_detail[j].attachmentResources[k].title = step_i_detail[
+                j
+              ].attachmentResources[k].title.replaceAll(
                 'src="',
                 'src="https://bdfzres.lexuewang.cn:5002'
               );
@@ -301,6 +395,7 @@ export default {
           qst_length = step_i_detail.length;
         }
       }
+      console.log(self.steps);
       this.$forceUpdate();
     } catch (error) {
       console.error(error);
@@ -309,4 +404,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.limit >>> * {
+  max-width: 100%;
+}
+</style>
