@@ -135,7 +135,28 @@
                 <div class="statistic-content">
                   <span v-if="question_detail.answerResult === 2">✔</span>
                   <span v-else-if="question_detail.answerResult === 4">❌</span>
-                  <h2 v-else class="orange--text">⍻</h2>
+                  <h2 v-else class="orange--text">
+                    <svg
+                      class="icon"
+                      style="
+                        width: 1.3em;
+                        height: 1.3em;
+                        vertical-align: middle;
+                        fill: currentColor;
+                        overflow: hidden;
+                        margin-top: -20px;
+                      "
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="739"
+                    >
+                      <path
+                        d="M823.168 247.168l60.330667 60.330667-193.834667 193.834666 151.168 151.168-60.330667 60.330667-151.168-151.168L384 806.997333l-243.498667-243.498666 60.330667-60.330667L384 686.293333l185.002667-184.96-172.501334-172.501333 60.330667-60.330667 172.501333 172.501334 193.834667-193.834667z"
+                        p-id="740"
+                      ></path>
+                    </svg>
+                  </h2>
                 </div>
               </div>
             </v-col>

@@ -3,7 +3,14 @@
     <v-card-title>
       <span>{{ item_info.title }}</span>
       <v-spacer></v-spacer>
-      <v-btn v-if="is_exam" style="margin-right:10px;" color="primary" fab x-small @click="score_query">
+      <v-btn
+        v-if="is_exam"
+        style="margin-right: 10px"
+        color="primary"
+        fab
+        x-small
+        @click="score_query"
+      >
         <v-icon>mdi-book-search</v-icon>
       </v-btn>
       <v-btn
@@ -85,7 +92,9 @@
                       ></v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <span v-else v-html="file.title" class="limit"></span>
+                  <div v-else class="pd10">
+                    <span v-html="file.title" class="limit"></span>
+                  </div>
                 </div>
               </div>
               <!--              试题类内容-->
@@ -113,7 +122,7 @@
                         :x-small="!clip || is_small"
                         :color="detail.show_ans ? 'warning' : 'primary'"
                         @click="show_ans(i, j)"
-                      >{{ detail.show_ans ? "关闭" : "查看" }}答案
+                        >{{ detail.show_ans ? "关闭" : "查看" }}答案
                       </v-btn>
                     </v-row>
                     <v-expand-transition>
@@ -128,7 +137,7 @@
                         <!--                        渲染答案-->
                         <v-card-subtitle
                           style="padding-top: 8px; padding-bottom: 8px"
-                        >答案
+                          >答案
                         </v-card-subtitle>
                         <v-divider></v-divider>
                         <div
@@ -151,7 +160,7 @@
                         <v-card-subtitle
                           v-if="detail.question.analysis !== '<p><br></p>'"
                           style="padding-top: 8px; padding-bottom: 8px"
-                        >解析
+                          >解析
                         </v-card-subtitle>
                         <v-divider
                           v-if="detail.question.analysis !== '<p><br></p>'"
@@ -169,7 +178,7 @@
                         <v-card-subtitle
                           v-if="detail.attachmentResources.length"
                           style="padding-top: 8px; padding-bottom: 8px"
-                        >附件
+                          >附件
                         </v-card-subtitle>
                         <v-divider
                           v-if="detail.attachmentResources.length"
@@ -212,7 +221,7 @@
                                 mdi-music-box
                               </v-icon>
                               <v-icon class="blue white--text" v-else
-                              >mdi-file
+                                >mdi-file
                               </v-icon>
                             </v-list-item-avatar>
                             <v-list-item-content>
@@ -224,7 +233,9 @@
                               ></v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
-                          <span v-else v-html="file.title" class="limit"></span>
+                          <div v-else class="pd10">
+                            <span v-html="file.title" class="limit"></span>
+                          </div>
                         </div>
                       </v-card>
                     </v-expand-transition>
@@ -249,21 +260,21 @@ export default {
     return {
       force_answer: false,
       steps: [],
-      step_id: -1
+      step_id: -1,
     };
   },
   methods: {
-    score_query: function() {
+    score_query: function () {
       let url = this.$router.resolve({
         path: "/grade",
         query: {
           guid: this.info.guid,
-          name: this.item_info.title
-        }
+          name: this.item_info.title,
+        },
       });
       window.open(url.href, "_blank");
     },
-    open_file: function(ext, title, guid) {
+    open_file: function (ext, title, guid) {
       if (ext === "") return;
       if (
         ext === ".mp4" ||
@@ -279,8 +290,8 @@ export default {
           query: {
             guid: guid,
             name: title,
-            ext: ext
-          }
+            ext: ext,
+          },
         });
         window.open(url.href, "_blank");
       } else if (
@@ -301,8 +312,8 @@ export default {
           query: {
             src: src,
             name: title,
-            artist: this.item_info.teacherName
-          }
+            artist: this.item_info.teacherName,
+          },
         });
         window.open(url.href, "_blank");
       } else {
@@ -316,20 +327,20 @@ export default {
           path: "/pdf_viewer",
           query: {
             src: src,
-            name: title
-          }
+            name: title,
+          },
         });
         window.open(url.href, "_blank");
       }
     },
-    show_ans: function(i, j) {
+    show_ans: function (i, j) {
       let newitem = this.steps[i];
       newitem.step_detail[j].show_ans = !newitem.step_detail[j].show_ans;
       Vue.set(this.steps, i, newitem);
-    }
+    },
   },
   props: ["item_info", "clip", "is_small", "is_exam"],
-  mounted: async function() {
+  mounted: async function () {
     let self = this;
     this.info = this.item_info;
     this.token = window.localStorage.getItem("token");
@@ -341,8 +352,8 @@ export default {
         this.item_info.guid +
         "?teacherAssignmentType=1",
       headers: {
-        Authorization: "Bearer " + this.token
-      }
+        Authorization: "Bearer " + this.token,
+      },
     };
 
     try {
@@ -355,11 +366,11 @@ export default {
         let qst_length = 10;
         while (qst_length >= 10) {
           var data =
-            "{\"number\":\"10\",\"page\":\"" +
+            '{"number":"10","page":"' +
             max_page +
-            "\",\"teacherAssignmentStepId\":\"" +
+            '","teacherAssignmentStepId":"' +
             step_i.id +
-            "\"}";
+            '"}';
 
           let config1 = {
             method: "post",
@@ -368,9 +379,9 @@ export default {
               "/SeniorThreeExercise/StudentSystem/GetGetLessonContent",
             headers: {
               Authorization: "Bearer " + self.token,
-              "Content-Type": "application/json;charset=utf-8"
+              "Content-Type": "application/json;charset=utf-8",
             },
-            data: data
+            data: data,
           };
 
           //获取试题
@@ -380,8 +391,8 @@ export default {
             step_i_detail[j]["show_ans"] = false;
             if (step_i_detail[j].content) {
               step_i_detail[j].content = step_i_detail[j].content.replaceAll(
-                "src=\"",
-                "src=\"https://bdfzres.lexuewang.cn:5002"
+                'src="/user',
+                'src="https://bdfzres.lexuewang.cn:5002/user'
               );
             }
             for (
@@ -391,25 +402,26 @@ export default {
             ) {
               if (step_i_detail[j].attachmentResources[k].resourceType !== 0)
                 continue;
+              console.log("1", step_i_detail[j].attachmentResources[k]);
               step_i_detail[j].attachmentResources[k].title = step_i_detail[
                 j
-                ].attachmentResources[k].title.replaceAll(
-                "src=\"",
-                "src=\"https://bdfzres.lexuewang.cn:5002"
+              ].attachmentResources[k].title.replaceAll(
+                'src="/user',
+                'src="https://bdfzres.lexuewang.cn:5002/user'
               );
             }
             if (step_i_detail[j]["question"] != null) {
               step_i_detail[j]["question"].content = step_i_detail[j][
                 "question"
-                ].content.replaceAll(
-                "src=\"",
-                "src=\"https://bdfzres.lexuewang.cn:5002"
+              ].content.replaceAll(
+                'src="/user',
+                'src="https://bdfzres.lexuewang.cn:5002/user'
               );
               step_i_detail[j]["question"].analysis = step_i_detail[j][
                 "question"
-                ].analysis.replaceAll(
-                "src=\"",
-                "src=\"https://bdfzres.lexuewang.cn:5002"
+              ].analysis.replaceAll(
+                'src="/user',
+                'src="https://bdfzres.lexuewang.cn:5002/user'
               );
 
               //替换答案
@@ -420,9 +432,9 @@ export default {
               ) {
                 step_i_detail[j]["question"].answer[k] = step_i_detail[j][
                   "question"
-                  ].answer[k].replaceAll(
-                  "src=\"",
-                  "src=\"https://bdfzres.lexuewang.cn:5002"
+                ].answer[k].replaceAll(
+                  'src="/user',
+                  'src="https://bdfzres.lexuewang.cn:5002/user'
                 );
               }
             }
@@ -438,12 +450,16 @@ export default {
     } catch (error) {
       console.error(error);
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
 .limit >>> * {
   max-width: 100%;
+}
+
+.pd10 {
+  padding: 10px;
 }
 </style>
