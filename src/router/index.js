@@ -5,6 +5,7 @@ import Lunch from "../views/Lunch.vue";
 import VideoViewer from "../views/VideoViewer.vue";
 import PDFViewer from "../views/PDFViewer";
 import AudioViewer from "../views/AudioViewer";
+import Grade from "../views/Grade";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,11 @@ const routes = [
     path: "/lunch",
     name: "Lunch",
     component: Lunch
+  },
+  {
+    path: "/grade",
+    name: "Grade",
+    component: Grade,
   },
   {
     path: "/video_viewer",

@@ -109,6 +109,7 @@
           :item_info="current_assignment"
           :clip="clips"
           :small="show_width <= 20"
+          :is_exam="show_test"
         ></assignment_detail>
       </v-main>
     </v-main>
@@ -172,7 +173,8 @@ export default {
           id +
           "&PageIndex=" +
           self.max_id +
-          "&PageNum=20&teacherAssignmentType=1",
+          "&PageNum=20&teacherAssignmentType=" +
+          (this.show_test ? "2" : "1"),
         headers: {
           Authorization: "Bearer " + this.token,
         },
