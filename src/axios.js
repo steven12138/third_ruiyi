@@ -8,37 +8,37 @@ let instance = {
 const _axios = axios.create([instance]);
 
 _axios.interceptors.request.use(
-  function(instance) {
+  function (instance) {
     return instance;
   },
-  function(error) {
+  function (error) {
     return Promise.reject(error);
   }
 );
 
 _axios.interceptors.response.use(
-  function(instance) {
+  function (instance) {
     return instance;
   },
-  function(error) {
+  function (error) {
     return Promise.reject(error);
   }
 );
 
-Plugin.install = function(Vue) {
+Plugin.install = function (Vue) {
   Vue.axios = _axios;
   window.axios = _axios;
   Object.defineProperties(Vue.prototype, {
     axios: {
       get() {
         return _axios;
-      }
+      },
     },
     $axios: {
       get() {
         return _axios;
-      }
-    }
+      },
+    },
   });
 };
 

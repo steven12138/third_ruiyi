@@ -365,7 +365,7 @@ export default {
         let max_page = 1;
         let qst_length = 10;
         while (qst_length >= 10) {
-          var data =
+          const data =
             '{"number":"10","page":"' +
             max_page +
             '","teacherAssignmentStepId":"' +

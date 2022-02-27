@@ -25,7 +25,7 @@ export default {
         theme: "#1976d2",
         name: "加载中",
         artist: "未知",
-        url: "http://music.163.com/song/media/outer/url?id=317151.mp3",
+        url: "https://music.163.com/song/media/outer/url?id=317151.mp3",
         cover: "https://source.unsplash.com/300x300/?music",
       },
     };
