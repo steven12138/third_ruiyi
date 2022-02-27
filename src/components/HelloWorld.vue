@@ -65,6 +65,10 @@ export default {
           }
           window.localStorage.setItem("token", response.data.data.tokenString);
           window.localStorage.setItem("guid", response.data.data.guid);
+          window.localStorage.setItem(
+            "gradeGuid",
+            response.data.data.gradeGuid
+          );
           window.localStorage.setItem("name", response.data.data.name);
           window.localStorage.setItem(
             "gradeGuid",

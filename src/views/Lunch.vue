@@ -42,7 +42,7 @@
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
-        <v-col>
+        <v-col style="width: 180px">
           <v-row
             v-show="clips"
             align="center"
